@@ -10,7 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_28_074654) do
+ActiveRecord::Schema.define(version: 2019_02_14_092826) do
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "address_1"
+    t.string "address_2"
+    t.string "landmark"
+    t.integer "pincode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "restaurants", force: :cascade do |t|
+    t.string "res_name"
+    t.string "poc_name"
+    t.string "poc_email"
+    t.string "poc_contactno"
+    t.string "password_digest"
+    t.integer "otp"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
@@ -18,6 +44,7 @@ ActiveRecord::Schema.define(version: 2019_01_28_074654) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "contactNumber"
   end
 
 end

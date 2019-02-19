@@ -1,85 +1,60 @@
-describe 'generateOTP' do
-	context 'when contact number is valid' do
-		it 'responds with otp' do
-			expect(generateOtp)
-		end
-	end
+require 'rails_helper'
+describe Restaurant, :type => :model do
 
-	context 'when contact number is invalid' do
-		it 'responds with error msg'
-	end
+  describe 'validations' do
+    context 'validates poc_contactno' do
+      it { should validate_presence_of(:poc_contactno)}
+      it { should validate_uniqueness_of(:poc_contactno)}
+      it { should validate_numericality_of(:poc_contactno).only_integer}
+    end
+   
+    context 'with poc_email as input' do
+      it { should validate_presence_of(:poc_email)}
+    end
+    context 'with password_digest as input' do
+      it { should validate_presence_of(:password_digest)}
+    end
+  end
+
+  # describe 'verifying OTP' do
+  #   context 'with otp as an input' do
+  #     it 'should detect if otp entered is valid' do
+  #       otp = '123456'
+  #       expect(subject.isOtpValid? otp).to be true
+        
+  #     end
+
+  #     it 'should detect if otp entered is invalid' do
+  #       otp = '3456'
+  #       expect(subject.isOtpValid? otp).to be false
+  #     end
+  #   end
+  # end
+
+  describe 'restaurant SignUp' do
+    let(:email_regex) { /\b[A-Z0-9._%a-z\-]+@(?:[A-Z0-9a-z\-]+\.)+[A-Za-z]{2,4}\z/ }
+    context 'with email as input' do
+      it 'should detect if email entered satifies the given regex' do 
+        poc_email = 'abc@das.com'
+        expect(poc_email).to match(email_regex)
+      end
+
+      it 'should detect if email entered does not satify the given regex' do 
+        poc_email = 'abc1das,com'
+        expect(poc_email).to_not match(email_regex)
+      end
+    end
+
+    context 'with password as input' do
+      let(:pass_regex) { /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,15}$/ }
+      it 'should detect if password satifies the regex'do
+        password_digest = 'Abcdf1'
+        expect(password_digest).to match(pass_regex)
+      end
+      it 'should detect if password does not satify the regex'do
+        password_digest = 'abc'
+        expect(password_digest).to_not match(pass_regex)
+      end
+    end
+  end
 end
-
-describe 'verifyOTP' do
-	context 'otp is valid' do
-		it 'responds with success: 200' do
-				expect(verifyOTP).to_eq "1234"
-
-		end
-	end
-
-	context 'otp is invalid' do
-		it 'responds with error' do
-			expect(verifyOTP).to_not be  "1234"
-		end
-		it 'responds with validation for blank input' do
-			expect(verifyOTP).to be_empty
-		end
-		it 'responds with validation for length' do
-			expect(verifyOTP).to contain_exactly
-	end
-end
-
-describe 'restaurant SignUp' do
-	
-	context 'email not entered'do
-		it 'responds with error msg email required'do
-			expect(response).to_exist
-	end
-
-	context 'password not entered' do
-		it 'responds with error msg password required'
-			expect(response).to_exist
-	end
-
-	context 'email not valid' do
-		it 'responds with email required' do
-			expect(response).to have_content "email" 
-	end
-
-	it 'responds with necessary regex' do
-			expect(response).to_raise error ""
-	end
-
-	context 'password not valid' do
-		it 'responds with error msg'
-	end
-
-	context 'contact number not recieved' do
-		it 'responds with error msg' do
-			expect(response)not_to contain "contactNo" 
-		end
-	end 
-
-	context 'valid' do
-		it 'responds with success'do
-			expect(response)to have_content 
-		end
-	end
-end
-
-describe 'restaurant login' do
-	context 'when valid creditials' do
-		it 'responds with auth token' do
-			expect(response)to have_content "auth token"
-		end
-	end
-
-	context 'when invalid creditials' do
-		it 'responds with failure in case of wrong token' do 
-			expect(response)not_to contain ""
-		end
-	end
-end
-
-

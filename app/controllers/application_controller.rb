@@ -1,12 +1,11 @@
 class ApplicationController < ActionController::API
- #before_action :authenticate_request
-  attr_reader :current_user
-   include Pundit
-   include Response
-  	
+	before_action :authenticate_request
+  attr_reader :current_restaurant
+   
   private
 
-  def current_user
-    AuthorizeApiRequest.call(request.headers['X-User-Token']).result
+  def authenticate_request
+   @current_restaurant = AuthorizeRestApiRequest.call(request.headers).result
+   render json: {error: 'Not Authorized'}, status: 401 unless @current_restaurant
   end
 end
